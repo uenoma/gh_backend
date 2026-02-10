@@ -4,7 +4,7 @@
 
 このAPIは、GH Databaseのデータを管理するためのRESTful APIです。CRUD操作（作成、読み取り、更新、削除）を提供します。
 
-ベースURL: `http://your-domain/api`
+ベースURL: `http://dndhideout.com/gh`
 
 ## データモデル
 
