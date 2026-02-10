@@ -7,6 +7,54 @@
 <a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
 </p>
 
+## Mobile Suit Backend API
+
+このプロジェクトは、モバイルスーツ（Mobile Suit）のデータを管理するためのLaravelベースのRESTful APIです。
+
+### 機能
+
+- モバイルスーツの一覧取得、作成、詳細取得、更新、削除
+- JSON形式の複雑なデータ構造に対応
+- テストデータ（Seeder）付き
+
+### API仕様書
+
+詳細なAPI仕様は [docs/api.md](docs/api.md) を参照してください。
+
+### セットアップ
+
+1. 依存関係のインストール
+```bash
+composer install
+```
+
+2. 環境設定
+```bash
+cp .env.example .env
+php artisan key:generate
+```
+
+3. データベース設定とマイグレーション
+```bash
+php artisan migrate
+```
+
+4. テストデータの投入
+```bash
+php artisan db:seed
+```
+
+5. サーバー起動
+```bash
+php artisan serve
+```
+
+### テスト実行
+
+```bash
+php artisan test
+```
+
 ## About Laravel
 
 Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:

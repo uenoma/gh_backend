@@ -1,0 +1,378 @@
+{
+  "data_id": "MS-06",
+  "ms_number": "MS-06",
+  "ms_name": "ザクⅡ",
+  "ms_icon": "",
+  "ms_data": {
+    "spec": {
+      "sensor_rank": "F",
+      "motion_thrust": 2,
+      "min_straight": "-",
+      "size": 0,
+      "stall_speed": "-",
+      "pp_limit": 10,
+      "def_modifier": 6,
+      "walk_speed": 3
+    },
+    "receive_types": [
+      {
+        "nama": "ヒートホーク",
+        "value": 7
+      },
+      {
+        "nama": "シールド",
+        "value": 5
+      },
+      {
+        "nama": "腕・武器",
+        "value": 6
+      },
+      {
+        "nama": "脚",
+        "value": 4
+      }
+    ],
+    "thrusters": [
+      {
+        "name": "メインバーニア",
+        "value": 4,
+        "direction": "F",
+        "fuel": 48
+      }
+    ],
+    "grapple_types": [
+      {
+        "name": "HHで斬る",
+        "value": 8,
+        "power": 5,
+        "destructive_power": 3
+      },
+      {
+        "name": "パンチ",
+        "value": 6,
+        "power": 2,
+        "destructive_power": 1
+      },
+      {
+        "name": "キック",
+        "value": 5,
+        "power": 2,
+        "destructive_power": 2
+      },
+      {
+        "name": "武器で殴る",
+        "value": 7,
+        "power": 1,
+        "destructive_power": 1
+      }
+    ],
+    "shooting_types": [
+      {
+        "name": "ザクマシンガン",
+        "times": 4,
+        "concentration": false,
+        "total_count": 30,
+        "total_count_times": 1,
+        "shooting_direction": "右腕",
+        "hit_rates": [12, 11, 10, 8, 7, 6, 4, 3, 2, 1],
+        "power": [4, 4, 4, 4, 3, 3, 3, 2, 2, 2],
+        "ammunition": true,
+        "destructive_power": 2
+      },
+      {
+        "name": "ザクバズーカ",
+        "times": 2,
+        "concentration": false,
+        "total_count": 4,
+        "total_count_times": 1,
+        "shooting_direction": "右腕",
+        "hit_rates": [10, 9, 8, 6, 5, 4, 3, 2, 1, 0],
+        "power": [7],
+        "ammunition": true,
+        "destructive_power": 3
+      },
+      {
+        "name": "フットミサイル",
+        "times": 3,
+        "concentration": true,
+        "total_count": 3,
+        "total_count_times": 2,
+        "shooting_direction": "胴体",
+        "hit_rates": [7, 6, 6, 5, 5, 4, 3, 2, null, null],
+        "power": [5],
+        "ammunition": true,
+        "destructive_power": 2
+      },
+      {
+        "name": "クラッカー",
+        "times": 1,
+        "concentration": false,
+        "total_count": 4,
+        "total_count_times": 1,
+        "shooting_direction": "全周",
+        "hit_rates": [9, 6, 3, 2, 0, null, null, null, null, null],
+        "power": [4],
+        "ammunition": true,
+        "destructive_power": 3
+      }
+    ],
+    "recive_types": [
+      {
+        "name": "ヒートホーク",
+        "value": 7
+      },
+      {
+        "name": "シールド",
+        "value": 5
+      },
+      {
+        "name": "腕・武器",
+        "value": 6
+      },
+      {
+        "name": "脚",
+        "value": 4
+      }
+    ],
+    "weapon_specs": [
+      {
+        "name": "ザクバズーカ",
+        "armor": 1,
+        "dcp": 6,
+        "hp": 1
+      },
+      {
+        "name": "ザクマシンガン",
+        "armor": 1,
+        "dcp": 5,
+        "hp": 1
+      },
+      {
+        "name": "ヒートホーク",
+        "armor": 6,
+        "dcp": null,
+        "hp": 5
+      },
+      {
+        "name": "シールド",
+        "armor": 6,
+        "dcp": null,
+        "hp": 5
+      }
+    ],
+    "avoidance": {
+      "front": {
+        "values": [5, 6, 6, 7, 7, 8]
+      },
+      "side": {
+        "values": [3, 4, 5, 6, 6, 7]
+      },
+      "back": {
+        "values": [3, 3, 4, 4, 5, 5]
+      }
+    },
+    "defence": {
+      "same_same": [7, 8, 6, 5],
+      "same_different": [5, 6, 4, 3],
+      "different_same": [4, 5, 3, 2],
+      "different_different": [3, 4, 2, 1]
+    },
+    "body_part": {
+      "front": [
+        "胴体",
+        "胴体",
+        "胴体",
+        "左腕",
+        "左脚",
+        "胴体",
+        "右脚",
+        "右腕",
+        "頭部",
+        "胴体",
+        "胴体"
+      ],
+      "right": [
+        "胴体",
+        "左腕",
+        "頭部",
+        "左脚",
+        "胴体",
+        "右脚",
+        "胴体",
+        "右腕",
+        "胴体",
+        "胴体",
+        "右脚"
+      ],
+      "left": [
+        "胴体",
+        "右腕",
+        "頭部",
+        "右脚",
+        "胴体",
+        "左脚",
+        "胴体",
+        "左腕",
+        "胴体",
+        "胴体",
+        "左脚"
+      ],
+      "back": [
+        "胴体",
+        "胴体",
+        "胴体",
+        "左腕",
+        "左脚",
+        "胴体",
+        "右脚",
+        "右腕",
+        "頭部",
+        "胴体",
+        "胴体"
+      ]
+    },
+    "body_specs": {
+      "head": [
+        {
+          "name": "モノアイ",
+          "values": [16, 21, 21, null],
+          "armor": 0,
+          "dcp": 4,
+          "part_explosion": false,
+          "hp": 1
+        },
+        {
+          "name": "動力パイプ",
+          "values": [32, 34, 34, 16],
+          "armor": 2,
+          "dcp": 9,
+          "part_explosion": true,
+          "hp": 2
+        },
+        {
+          "name": "頭部",
+          "values": [66, 66, 66, 66],
+          "armor": 2,
+          "dcp": 5,
+          "part_explosion": false,
+          "hp": 4
+        }
+      ],
+      "leg": [
+        {
+          "name": "間接",
+          "values": [12, 13, 13, 12],
+          "armor": 2,
+          "dcp": 5,
+          "part_explosion": false,
+          "hp": 2
+        },
+        {
+          "name": "動力パイプ",
+          "values": [22, 26, 21, 22],
+          "armor": 2,
+          "dcp": 9,
+          "part_explosion": true,
+          "hp": 2
+        },
+        {
+          "name": "脚",
+          "values": [66, 66, 66, 66],
+          "armor": 3,
+          "dcp": 6,
+          "part_explosion": false,
+          "hp": 5
+        }
+      ],
+      "body": [
+        {
+          "name": "コクピット",
+          "values": [14, 12, 12, null],
+          "armor": 3,
+          "dcp": 10,
+          "part_explosion": false,
+          "hp": 2,
+          "body": true
+        },
+        {
+          "name": "動力パイプ",
+          "values": [22, 16, 16, 14],
+          "armor": 2,
+          "dcp": 9,
+          "part_explosion": true,
+          "hp": 2,
+          "body": false
+        },
+        {
+          "name": "メインバーニア",
+          "values": [23, 31, 31, 32],
+          "armor": 2,
+          "dcp": 10,
+          "part_explosion": false,
+          "hp": 3,
+          "body": false
+        },
+        {
+          "name": "腹部",
+          "values": [31, 35, 35, 36],
+          "armor": 2,
+          "dcp": 10,
+          "part_explosion": false,
+          "hp": 6,
+          "body": true
+        },
+        {
+          "name": "胴体",
+          "values": [66, 66, 66, 66],
+          "armor": 3,
+          "dcp": 10,
+          "part_explosion": false,
+          "hp": 6,
+          "body": true
+        }
+      ],
+      "arm": [
+        {
+          "name": "肩",
+          "values": [21, 16, 16, 21],
+          "armor": 2,
+          "dcp": 5,
+          "part_explosion": false,
+          "hp": 2
+        },
+        {
+          "name": "肩関節",
+          "values": [23, 21, 21, 23],
+          "armor": 2,
+          "dcp": 7,
+          "part_explosion": true,
+          "hp": 2
+        },
+        {
+          "name": "手",
+          "values": [33, 32, 32, 33],
+          "armor": 2,
+          "dcp": null,
+          "part_explosion": false,
+          "hp": 3
+        },
+        {
+          "name": "腕間接",
+          "values": [34, 33, 33, 34],
+          "armor": 2,
+          "dcp": 5,
+          "part_explosion": false,
+          "hp": 2
+        },
+        {
+          "name": "腕",
+          "values": [66, 66, 66, 66],
+          "armor": 2,
+          "dcp": 4,
+          "part_explosion": false,
+          "hp": 4
+        }
+      ]
+    }
+  }
+}

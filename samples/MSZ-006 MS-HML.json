@@ -1,0 +1,717 @@
+{
+  "data_id": "MSZ-006 MS-HML",
+  "ms_number": "MSZ-006",
+  "ms_name": "Zガンダム",
+  "ms_icon": "",
+  "ms_data": {
+    "spec": {
+      "sensor_rank": "C",
+      "motion_thrust": "7",
+      "min_straight": "",
+      "size": "1",
+      "stall_speed": "",
+      "pp_limit": "24",
+      "def_modifier": "6",
+      "walk_speed": "3"
+    },
+    "receive_types": [
+      {
+        "nama": "ビームサーベル",
+        "value": "8"
+      },
+      {
+        "nama": "シールド",
+        "value": "9"
+      },
+      {
+        "nama": "腕・武器",
+        "value": "7"
+      },
+      {
+        "nama": "腕",
+        "value": "5"
+      }
+    ],
+    "thrusters": [
+      {
+        "name": "メインバーニア",
+        "value": "4",
+        "direction": "F",
+        "fuel": "68"
+      },
+      {
+        "name": "左脚バーニア",
+        "value": "2",
+        "direction": "F",
+        "fuel": "34"
+      },
+      {
+        "fuel": "34",
+        "value": "2",
+        "direction": "F",
+        "name": "右脚バーニア"
+      },
+      {
+        "value": "0",
+        "direction": "T",
+        "fuel": "17",
+        "name": "左肩バーニア"
+      },
+      {
+        "value": "0",
+        "direction": "T",
+        "fuel": "17",
+        "name": "右肩バーニア"
+      }
+    ],
+    "grapple_types": [
+      {
+        "name": "BSで斬る",
+        "value": "10",
+        "power": "10",
+        "destructive_power": "3"
+      },
+      {
+        "name": "BSで突く",
+        "value": "8",
+        "power": "11",
+        "destructive_power": "1"
+      },
+      {
+        "name": "パンチ",
+        "value": "7",
+        "power": "2",
+        "destructive_power": "2"
+      },
+      {
+        "name": "キック",
+        "value": "6",
+        "power": "3",
+        "destructive_power": "3"
+      },
+      {
+        "name": "武器で殴る",
+        "value": "8",
+        "power": "1",
+        "destructive_power": "1"
+      },
+      {
+        "name": "シールドで殴る",
+        "value": "6",
+        "power": "3",
+        "destructive_power": "2"
+      }
+    ],
+    "shooting_types": [
+      {
+        "name": "ビームライフル",
+        "hit_rates": [
+          "14",
+          "13",
+          "12",
+          "11",
+          "10",
+          "9",
+          "8",
+          "7",
+          "6",
+          "5"
+        ],
+        "times": "5",
+        "total_count": "8",
+        "total_count_times": "1",
+        "shooting_direction": "右腕",
+        "power": [
+          "15",
+          "15",
+          "14",
+          "14",
+          "13",
+          "13",
+          "12",
+          "12",
+          "11",
+          "10"
+        ],
+        "destructive_power": "1"
+      },
+      {
+        "name": "グレネードランチャー",
+        "hit_rates": [
+          "10",
+          "9",
+          "8",
+          "6",
+          "5",
+          "4",
+          "3",
+          "2",
+          "1",
+          "0"
+        ],
+        "times": "2",
+        "concentration": true,
+        "total_count": "4",
+        "total_count_times": "2",
+        "shooting_direction": "左右腕",
+        "power": [
+          "6",
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null
+        ],
+        "ammunition": true,
+        "destructive_power": "3"
+      },
+      {
+        "name": "バルカン",
+        "hit_rates": [
+          "13",
+          "11",
+          "9",
+          "7",
+          "5",
+          "3",
+          "1",
+          null,
+          null,
+          null
+        ],
+        "times": "3",
+        "total_count": "3",
+        "total_count_times": "2",
+        "shooting_direction": "頭部",
+        "power": [
+          "3",
+          "3",
+          "2",
+          "2",
+          "2",
+          "2",
+          "2",
+          null,
+          null,
+          null
+        ],
+        "destructive_power": "1",
+        "ammunition": true
+      },
+      {
+        "name": "HML",
+        "hit_rates": [
+          "11",
+          "11",
+          "10",
+          "10",
+          "9",
+          "9",
+          "9",
+          "9",
+          "8",
+          "7"
+        ],
+        "times": "1",
+        "total_count": "3",
+        "shooting_direction": "胴体",
+        "total_count_times": "1",
+        "power": [
+          "20",
+          "20",
+          "19",
+          "19",
+          "19",
+          "18",
+          "18",
+          "18",
+          "17",
+          "16"
+        ],
+        "destructive_power": "4"
+      }
+    ],
+    "weapon_specs": [
+      {
+        "name": "ビームライフル",
+        "armor": "1",
+        "dcp": "5",
+        "hp": "1"
+      },
+      {
+        "name": "ビームサーベル"
+      },
+      {
+        "name": "シールド",
+        "armor": "8",
+        "hp": "4"
+      },
+      {
+        "name": "HML",
+        "armor": "5",
+        "dcp": "6",
+        "hp": "5"
+      }
+    ],
+    "avoidance": {
+      "front": {
+        "values": [
+          "7",
+          "8",
+          "9",
+          "10",
+          "11",
+          "12"
+        ]
+      },
+      "side": {
+        "values": [
+          "6",
+          "7",
+          "8",
+          "9",
+          "10",
+          "11"
+        ]
+      },
+      "back": {
+        "values": [
+          "6",
+          "6",
+          "7",
+          "8",
+          "9",
+          "10"
+        ]
+      }
+    },
+    "defence": {
+      "same_same": [
+        "9",
+        "8",
+        "10",
+        "7"
+      ],
+      "same_different": [
+        "7",
+        "6",
+        "8",
+        "5"
+      ],
+      "different_same": [
+        "6",
+        "5",
+        "7",
+        "4"
+      ],
+      "different_different": [
+        "5",
+        "4",
+        "6",
+        "3"
+      ]
+    },
+    "body_part": {
+      "front": [
+        "HML",
+        "頭部",
+        "左腕",
+        "左脚",
+        "胴体",
+        "HML",
+        "胴体",
+        "右脚",
+        "右腕",
+        "胴体",
+        "HML"
+      ],
+      "right": [
+        "HML",
+        "左腕",
+        "右腕",
+        "胴体",
+        "HML",
+        "右脚",
+        "胴体",
+        "胴体",
+        "左脚",
+        "頭部",
+        "HML"
+      ],
+      "left": [
+        "HML",
+        "右腕",
+        "左腕",
+        "胴体",
+        "HML",
+        "左脚",
+        "胴体",
+        "胴体",
+        "右脚",
+        "頭部",
+        "HML"
+      ],
+      "back": [
+        "HML",
+        "頭部",
+        "左腕",
+        "左脚",
+        "胴体",
+        "胴体",
+        "HML",
+        "右腕",
+        "右脚",
+        "胴体",
+        "胴体"
+      ]
+    },
+    "body_specs": {
+      "head": [
+        {
+          "name": "カメラアイ",
+          "values": [
+            13,
+            12,
+            12,
+            null
+          ],
+          "armor": 0,
+          "dcp": null,
+          "part_explosion": false,
+          "hp": 1
+        },
+        {
+          "name": "前部カメラ",
+          "values": [
+            14,
+            15,
+            15,
+            null
+          ],
+          "armor": 0,
+          "dcp": null,
+          "part_explosion": false,
+          "hp": 1
+        },
+        {
+          "name": "後部カメラ",
+          "values": [
+            null,
+            22,
+            22,
+            12
+          ],
+          "armor": 0,
+          "dcp": null,
+          "part_explosion": false,
+          "hp": 1
+        },
+        {
+          "name": "左バルカン",
+          "values": [
+            16,
+            null,
+            25,
+            null
+          ],
+          "armor": 2,
+          "dcp": 8,
+          "part_explosion": true,
+          "hp": 1
+        },
+        {
+          "name": "右バルカン",
+          "values": [
+            22,
+            25,
+            null,
+            null
+          ],
+          "armor": 2,
+          "dcp": 8,
+          "part_explosion": true,
+          "hp": 1
+        },
+        {
+          "name": "頭部",
+          "values": [
+            66,
+            66,
+            66,
+            48
+          ],
+          "armor": 7,
+          "dcp": null,
+          "part_explosion": false,
+          "hp": 3
+        }
+      ],
+      "leg": [
+        {
+          "name": "関節",
+          "values": [
+            13,
+            14,
+            14,
+            14
+          ],
+          "armor": 2,
+          "dcp": null,
+          "part_explosion": false,
+          "hp": 2
+        },
+        {
+          "name": "バーニア",
+          "values": [
+            23,
+            25,
+            25,
+            32
+          ],
+          "armor": 2,
+          "dcp": 7,
+          "part_explosion": true,
+          "hp": 2
+        },
+        {
+          "name": "動力パイプ",
+          "values": [
+            null,
+            31,
+            31,
+            36
+          ],
+          "armor": 2,
+          "dcp": 9,
+          "part_explosion": true,
+          "hp": 2
+        },
+        {
+          "name": "脚",
+          "values": [
+            66,
+            66,
+            66,
+            66
+          ],
+          "armor": 6,
+          "dcp": null,
+          "part_explosion": false,
+          "hp": 5
+        }
+      ],
+      "body": [
+        {
+          "name": "コクピット",
+          "values": [
+            13,
+            12,
+            12,
+            null
+          ],
+          "armor": 7,
+          "dcp": 8,
+          "part_explosion": false,
+          "hp": 2,
+          "body": true
+        },
+        {
+          "name": "エアインテーク",
+          "values": [
+            15,
+            13,
+            13,
+            null
+          ],
+          "armor": 2,
+          "dcp": 7,
+          "part_explosion": false,
+          "hp": 2,
+          "body": false
+        },
+        {
+          "name": "腹部",
+          "values": [
+            22,
+            21,
+            21,
+            12
+          ],
+          "armor": 6,
+          "dcp": 6,
+          "part_explosion": false,
+          "hp": 6,
+          "body": true
+        },
+        {
+          "name": "メインバーニア",
+          "values": [
+            null,
+            24,
+            24,
+            15
+          ],
+          "armor": 5,
+          "dcp": 7,
+          "part_explosion": false,
+          "hp": 3,
+          "body": false
+        },
+        {
+          "name": "LTスタビライザー",
+          "values": [
+            null,
+            34,
+            34,
+            26
+          ],
+          "armor": 5,
+          "dcp": 7,
+          "part_explosion": true,
+          "hp": 2,
+          "body": false
+        },
+        {
+          "name": "左フライングアーマー",
+          "values": [
+            25,
+            41,
+            45,
+            42
+          ],
+          "armor": 8,
+          "dcp": null,
+          "part_explosion": false,
+          "hp": 5,
+          "body": false
+        },
+        {
+          "name": "右フライングアーマー",
+          "values": [
+            32,
+            52,
+            52,
+            54
+          ],
+          "armor": 8,
+          "dcp": null,
+          "part_explosion": false,
+          "hp": 5,
+          "body": false
+        },
+        {
+          "name": "胴体",
+          "values": [
+            66,
+            66,
+            66,
+            66
+          ],
+          "armor": 7,
+          "dcp": 6,
+          "part_explosion": false,
+          "hp": 6,
+          "body": true
+        }
+      ],
+      "arm": [
+        {
+          "name": "肩",
+          "values": [
+            16,
+            14,
+            14,
+            16
+          ],
+          "armor": 7,
+          "dcp": null,
+          "part_explosion": false,
+          "hp": 3
+        },
+        {
+          "name": "肩関節",
+          "values": [
+            22,
+            15,
+            15,
+            22
+          ],
+          "armor": 2,
+          "dcp": 7,
+          "part_explosion": true,
+          "hp": 2
+        },
+        {
+          "name": "グレネードランチャー",
+          "values": [
+            25,
+            26,
+            21,
+            25
+          ],
+          "armor": 5,
+          "dcp": 8,
+          "part_explosion": true,
+          "hp": 2
+        },
+        {
+          "name": "腕間接",
+          "values": [
+            32,
+            32,
+            25,
+            32
+          ],
+          "armor": 2,
+          "dcp": null,
+          "part_explosion": false,
+          "hp": 2
+        },
+        {
+          "name": "手",
+          "values": [
+            42,
+            43,
+            36,
+            42
+          ],
+          "armor": 4,
+          "dcp": null,
+          "part_explosion": false,
+          "hp": 2
+        },
+        {
+          "name": "肩バーニア",
+          "values": [
+            46,
+            51,
+            42,
+            46
+          ],
+          "armor": 2,
+          "dcp": 7,
+          "part_explosion": true,
+          "hp": 2
+        },
+        {
+          "name": "腕",
+          "values": [
+            66,
+            66,
+            66,
+            66
+          ],
+          "armor": 6,
+          "dcp": null,
+          "part_explosion": false,
+          "hp": 4
+        }
+      ]
+    }
+  },
+  "ms_name_optional": "メガランチャー装備モビルスーツ形態"
+}
