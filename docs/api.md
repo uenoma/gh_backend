@@ -4,7 +4,7 @@
 
 このAPIは、GH Databaseのデータを管理するためのRESTful APIです。CRUD操作（作成、読み取り、更新、削除）を提供します。
 
-ベースURL: `http://dndhideout.com/gh`
+ベースURL: `https://dndhideout.com/gh/gh_backend/public`
 
 ## データモデル
 
@@ -181,12 +181,12 @@
 
 #### 一覧取得
 ```bash
-curl -X GET http://your-domain/api/mobile-suits
+curl -X GET http://dndhideout.com/gh/gh_backend/public/api/mobile-suits
 ```
 
 #### 作成
 ```bash
-curl -X POST http://your-domain/api/mobile-suits \
+curl -X POST http://dndhideout.com/gh/gh_backend/public/api/mobile-suits \
   -H "Content-Type: application/json" \
   -d '{
     "data_id": "MS-06",
@@ -198,12 +198,12 @@ curl -X POST http://your-domain/api/mobile-suits \
 
 #### 詳細取得
 ```bash
-curl -X GET http://your-domain/api/mobile-suits/1
+curl -X GET http://dndhideout.com/gh/gh_backend/public/api/mobile-suits/1
 ```
 
 #### 更新
 ```bash
-curl -X PUT http://your-domain/api/mobile-suits/1 \
+curl -X PUT http://dndhideout.com/gh/gh_backend/public/api/mobile-suits/1 \
   -H "Content-Type: application/json" \
   -d '{
     "ms_name": "更新された名称",
@@ -213,7 +213,7 @@ curl -X PUT http://your-domain/api/mobile-suits/1 \
 
 #### 削除
 ```bash
-curl -X DELETE http://your-domain/api/mobile-suits/1
+curl -X DELETE http://dndhideout.com/gh/gh_backend/public/api/mobile-suits/1
 ```
 
 ## テストデータ
