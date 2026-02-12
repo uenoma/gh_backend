@@ -60,7 +60,7 @@ class MobileSuitController extends Controller
             'edit_password' => Hash::make($validated['edit_password']),
         ]);
 
-        return response()->json($mobileSuit, 201);
+        return response()->json($mobileSuit->load('creator'), 201);
     }
 
     /**
@@ -106,7 +106,7 @@ class MobileSuitController extends Controller
             'edit_password' => Hash::make($validated['edit_password']),
         ]);
 
-        return response()->json($mobileSuit);
+        return response()->json($mobileSuit->load('creator'));
     }
 
     /**
