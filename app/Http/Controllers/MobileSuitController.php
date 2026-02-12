@@ -95,7 +95,7 @@ class MobileSuitController extends Controller
         ]);
 
         $mobileSuit = MobileSuit::findOrFail($id);
-        if ($errorResponse = $this->checkCreator($request, $mobileSuit)) {
+        if ($mobileSuit->creator && ($errorResponse = $this->checkCreator($request, $mobileSuit))) {
             return $errorResponse;
         }
         $mobileSuitData = Arr::except($validated, ['creator_name', 'edit_password']);
