@@ -24,7 +24,7 @@ class MobileSuitController extends Controller
     {
         $validated = $request->validate([
             'data_id' => 'required|string',
-            'ms_number' => 'required|string',
+            'ms_number' => 'nullable|string',
             'ms_name' => 'required|string',
             'ms_name_optional' => 'nullable|string',
             'ms_icon' => 'nullable|string',

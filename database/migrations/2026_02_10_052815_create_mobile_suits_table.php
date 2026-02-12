@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('mobile_suits', function (Blueprint $table) {
             $table->id();
             $table->string('data_id');
-            $table->string('ms_number');
+            $table->string('ms_number')->nullable();
             $table->string('ms_name');
             $table->string('ms_name_optional')->nullable();
             $table->string('ms_icon')->nullable();
