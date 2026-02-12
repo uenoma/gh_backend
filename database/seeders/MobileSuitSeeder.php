@@ -6,6 +6,7 @@ use App\Models\MobileSuit;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\Hash;
 
 class MobileSuitSeeder extends Seeder
 {
@@ -24,7 +25,12 @@ class MobileSuitSeeder extends Seeder
             $path = base_path('samples/' . $file);
             if (File::exists($path)) {
                 $data = json_decode(File::get($path), true);
-                MobileSuit::create($data);
+                $mobileSuit = MobileSuit::create($data);
+                // Add default creator
+                $mobileSuit->creator()->create([
+                    'creator_name' => 'admin',
+                    'edit_password' => Hash::make('password'),
+                ]);
             }
         }
     }

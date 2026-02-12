@@ -177,9 +177,10 @@
 **ボディ:**
 ```json
 {
-  "message": "The data_id field is required.",
+  "message": "データIDは必須です (and 1 more error)",
   "errors": {
-    "data_id": ["The data_id field is required."]
+    "data_id": ["データIDは必須です"],
+    "ms_name": ["MS名称は必須です"]
   }
 }
 ```
@@ -191,7 +192,7 @@
 **ボディ:**
 ```json
 {
-  "error": "Unauthorized"
+  "message": "作成者名またはパスワードが正しくありません"
 }
 ```
 

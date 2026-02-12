@@ -17,7 +17,7 @@ class MobileSuitController extends Controller
     {
         $creator = $mobileSuit->creator;
         if (!$creator || $creator->creator_name !== $request->creator_name || !Hash::check($request->edit_password, $creator->edit_password)) {
-            return response()->json(['error' => 'Unauthorized'], 403);
+            return response()->json(['message' => '作成者名またはパスワードが正しくありません'], 403);
         }
         return null;
     }
@@ -44,6 +44,12 @@ class MobileSuitController extends Controller
             'ms_data' => 'required|array',
             'creator_name' => 'required|string',
             'edit_password' => 'required|string',
+        ], [
+            'data_id.required' => 'データIDは必須です',
+            'ms_name.required' => 'MS名称は必須です',
+            'ms_data.required' => 'MSデータは必須です',
+            'creator_name.required' => '作成者名は必須です',
+            'edit_password.required' => '編集パスワードは必須です',
         ]);
 
         $mobileSuitData = Arr::except($validated, ['creator_name', 'edit_password']);
@@ -80,6 +86,12 @@ class MobileSuitController extends Controller
             'ms_data' => 'required|array',
             'creator_name' => 'required|string',
             'edit_password' => 'required|string',
+        ], [
+            'data_id.required' => 'データIDは必須です',
+            'ms_name.required' => 'MS名称は必須です',
+            'ms_data.required' => 'MSデータは必須です',
+            'creator_name.required' => '作成者名は必須です',
+            'edit_password.required' => '編集パスワードは必須です',
         ]);
 
         $mobileSuit = MobileSuit::findOrFail($id);
@@ -105,6 +117,9 @@ class MobileSuitController extends Controller
         $validated = $request->validate([
             'creator_name' => 'required|string',
             'edit_password' => 'required|string',
+        ], [
+            'creator_name.required' => '作成者名は必須です',
+            'edit_password.required' => '編集パスワードは必須です',
         ]);
 
         $mobileSuit = MobileSuit::findOrFail($id);

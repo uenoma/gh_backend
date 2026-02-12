@@ -112,9 +112,9 @@ class MobileSuitTest extends TestCase
     }
 
     /**
-     * Test the mobile suits destroy endpoint with unauthorized access.
+     * Test the mobile suits update endpoint with validation error.
      */
-    public function test_destroy_unauthorized(): void
+    public function test_update_validation_error(): void
     {
         // First create a mobile suit
         $createData = [
@@ -126,14 +126,23 @@ class MobileSuitTest extends TestCase
         ];
         $this->postJson('/api/mobile-suits', $createData);
 
-        // Try to delete with wrong credentials
-        $deleteData = [
-            'creator_name' => 'Wrong Creator',
-            'edit_password' => 'wrong_password',
+        // Try to update with missing required fields
+        $updateData = [
+            'ms_name' => 'Updated Name',
+            // missing data_id, ms_data, creator_name, edit_password
         ];
 
-        $response = $this->deleteJson('/api/mobile-suits/1', $deleteData);
+        $response = $this->putJson('/api/mobile-suits/1', $updateData);
 
-        $response->assertStatus(403);
+        $response->assertStatus(422)
+                 ->assertJson([
+                     'message' => 'データIDは必須です (and 3 more errors)',
+                     'errors' => [
+                         'data_id' => ['データIDは必須です'],
+                         'ms_data' => ['MSデータは必須です'],
+                         'creator_name' => ['作成者名は必須です'],
+                         'edit_password' => ['編集パスワードは必須です'],
+                     ],
+                 ]);
     }
 }
