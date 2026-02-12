@@ -18,4 +18,9 @@ class MobileSuit extends Model
     protected $casts = [
         'ms_data' => 'array',
     ];
+
+    public function creator()
+    {
+        return $this->hasOne(MobileSuitCreator::class);
+    }
 }

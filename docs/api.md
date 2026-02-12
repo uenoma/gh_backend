@@ -13,11 +13,20 @@
 | フィールド | タイプ | 必須 | 説明 |
 |------------|--------|------|------|
 | `data_id` | string | ✅ | データID |
-| `ms_number` | string | ✅ | MS番号 |
+| `ms_number` | string | ❌ | MS番号（任意） |
 | `ms_name` | string | ✅ | MS名称 |
 | `ms_name_optional` | string | ❌ | オプション名称 |
 | `ms_icon` | string | ❌ | アイコン |
 | `ms_data` | object | ✅ | MS詳細データ（JSON） |
+
+#### リクエスト時の追加フィールド
+
+作成・更新リクエスト時に以下のフィールドを追加で送信します：
+
+| フィールド | タイプ | 必須 | 説明 |
+|------------|--------|------|------|
+| `creator_name` | string | ✅ | 作成者名 |
+| `edit_password` | string | ✅ | 編集パスワード |
 
 ### ms_data 構造
 
@@ -82,7 +91,9 @@
     "spec": { ... },
     "receive_types": [ ... ],
     ...
-  }
+  },
+  "creator_name": "作成者名",
+  "edit_password": "編集パスワード"
 }
 ```
 
@@ -144,6 +155,15 @@
 |------------|--------|------|------|
 | `id` | integer | ✅ | 機体データID |
 
+#### リクエストボディ
+
+```json
+{
+  "creator_name": "作成者名",
+  "edit_password": "編集パスワード"
+}
+```
+
 #### レスポンス
 
 **ステータスコード:** 204 No Content
@@ -161,6 +181,17 @@
   "errors": {
     "data_id": ["The data_id field is required."]
   }
+}
+```
+
+### 権限エラー
+
+**ステータスコード:** 403 Forbidden
+
+**ボディ:**
+```json
+{
+  "message": "Unauthorized"
 }
 ```
 
@@ -192,7 +223,9 @@ curl -X POST http://dndhideout.com/gh/gh_backend/public/api/mobile-suits \
     "data_id": "MS-06",
     "ms_number": "MS-06",
     "ms_name": "ザクⅡ",
-    "ms_data": { ... }
+    "ms_data": { ... },
+    "creator_name": "作成者名",
+    "edit_password": "編集パスワード"
   }'
 ```
 
@@ -206,14 +239,23 @@ curl -X GET http://dndhideout.com/gh/gh_backend/public/api/mobile-suits/1
 curl -X PUT http://dndhideout.com/gh/gh_backend/public/api/mobile-suits/1 \
   -H "Content-Type: application/json" \
   -d '{
+    "data_id": "MS-06",
+    "ms_number": "MS-06",
     "ms_name": "更新された名称",
-    ...
+    "ms_data": { ... },
+    "creator_name": "作成者名",
+    "edit_password": "編集パスワード"
   }'
 ```
 
 #### 削除
 ```bash
-curl -X DELETE http://dndhideout.com/gh/gh_backend/public/api/mobile-suits/1
+curl -X DELETE http://dndhideout.com/gh/gh_backend/public/api/mobile-suits/1 \
+  -H "Content-Type: application/json" \
+  -d '{
+    "creator_name": "作成者名",
+    "edit_password": "編集パスワード"
+  }'
 ```
 
 ## テストデータ
@@ -227,5 +269,9 @@ Seederにより以下のテストデータが登録されています：
 ## 注意事項
 
 - `ms_data` フィールドは複雑なJSON構造を持ち、変更時は全体を送信する必要があります
+- `ms_number` は任意フィールドです
+- `creator_name` と `edit_password` は作成・更新・削除時に必須です（レスポンスには含まれません）
+- `edit_password` はハッシュ化されて保存されます
+- 更新・削除時は作成者名とパスワードが一致しない場合、403エラーが返されます
 - バリデーションにより必須フィールドのチェックが行われます
 - エラー時は適切なHTTPステータスコードとエラーメッセージが返されます

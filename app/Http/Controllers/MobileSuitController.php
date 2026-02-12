@@ -5,9 +5,21 @@ namespace App\Http\Controllers;
 use App\Http\Controllers\Controller;
 use App\Models\MobileSuit;
 use Illuminate\Http\Request;
+use Illuminate\Support\Arr;
+use Illuminate\Support\Facades\Hash;
 
 class MobileSuitController extends Controller
 {
+    /**
+     * Check if the creator name and password match.
+     */
+    private function checkCreator(Request $request, MobileSuit $mobileSuit)
+    {
+        $creator = $mobileSuit->creator;
+        if (!$creator || $creator->creator_name !== $request->creator_name || !Hash::check($request->edit_password, $creator->edit_password)) {
+            abort(403, 'Unauthorized');
+        }
+    }
     /**
      * Display a listing of the resource.
      */
@@ -29,9 +41,17 @@ class MobileSuitController extends Controller
             'ms_name_optional' => 'nullable|string',
             'ms_icon' => 'nullable|string',
             'ms_data' => 'required|array',
+            'creator_name' => 'required|string',
+            'edit_password' => 'required|string',
         ]);
 
-        $mobileSuit = MobileSuit::create($validated);
+        $mobileSuitData = Arr::except($validated, ['creator_name', 'edit_password']);
+        $mobileSuit = MobileSuit::create($mobileSuitData);
+
+        $mobileSuit->creator()->create([
+            'creator_name' => $validated['creator_name'],
+            'edit_password' => Hash::make($validated['edit_password']),
+        ]);
 
         return response()->json($mobileSuit, 201);
     }
@@ -52,15 +72,24 @@ class MobileSuitController extends Controller
     {
         $validated = $request->validate([
             'data_id' => 'required|string',
-            'ms_number' => 'required|string',
+            'ms_number' => 'nullable|string',
             'ms_name' => 'required|string',
             'ms_name_optional' => 'nullable|string',
             'ms_icon' => 'nullable|string',
             'ms_data' => 'required|array',
+            'creator_name' => 'required|string',
+            'edit_password' => 'required|string',
         ]);
 
         $mobileSuit = MobileSuit::findOrFail($id);
-        $mobileSuit->update($validated);
+        $this->checkCreator($request, $mobileSuit);
+        $mobileSuitData = Arr::except($validated, ['creator_name', 'edit_password']);
+        $mobileSuit->update($mobileSuitData);
+
+        $mobileSuit->creator()->updateOrCreate([], [
+            'creator_name' => $validated['creator_name'],
+            'edit_password' => Hash::make($validated['edit_password']),
+        ]);
 
         return response()->json($mobileSuit);
     }
@@ -68,9 +97,15 @@ class MobileSuitController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy(Request $request, string $id)
     {
+        $validated = $request->validate([
+            'creator_name' => 'required|string',
+            'edit_password' => 'required|string',
+        ]);
+
         $mobileSuit = MobileSuit::findOrFail($id);
+        $this->checkCreator($request, $mobileSuit);
         $mobileSuit->delete();
 
         return response()->noContent();

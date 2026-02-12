@@ -33,6 +33,8 @@ class MobileSuitTest extends TestCase
             'data_id' => 'test_data_id',
             'ms_name' => 'Test Mobile Suit',
             'ms_data' => ['key' => 'value'],
+            'creator_name' => 'Test Creator',
+            'edit_password' => 'test_password',
         ];
 
         $response = $this->postJson('/api/mobile-suits', $data);
@@ -43,7 +45,7 @@ class MobileSuitTest extends TestCase
                      'ms_name' => 'Test Mobile Suit',
                      'ms_data' => ['key' => 'value'],
                  ])
-                 ->assertJsonMissing(['ms_number']); // ms_number should not be in response if null
+                 ->assertJsonMissing(['ms_number', 'creator']);
     }
 
     /**
@@ -52,13 +54,13 @@ class MobileSuitTest extends TestCase
     public function test_store_missing_required(): void
     {
         $data = [
-            'ms_name' => 'Test Mobile Suit', // missing data_id and ms_data
+            'ms_name' => 'Test Mobile Suit', // missing data_id, ms_data, creator_name, edit_password
         ];
 
         $response = $this->postJson('/api/mobile-suits', $data);
 
         $response->assertStatus(422)
-                 ->assertJsonValidationErrors(['data_id', 'ms_data']);
+                 ->assertJsonValidationErrors(['data_id', 'ms_data', 'creator_name', 'edit_password']);
     }
 
     /**
@@ -70,11 +72,68 @@ class MobileSuitTest extends TestCase
             'data_id' => '',
             'ms_name' => '',
             'ms_data' => [],
+            'creator_name' => '',
+            'edit_password' => '',
         ];
 
         $response = $this->postJson('/api/mobile-suits', $data);
 
         $response->assertStatus(422)
-                 ->assertJsonValidationErrors(['data_id', 'ms_name', 'ms_data']);
+                 ->assertJsonValidationErrors(['data_id', 'ms_name', 'ms_data', 'creator_name', 'edit_password']);
+    }
+
+    /**
+     * Test the mobile suits update endpoint with unauthorized access.
+     */
+    public function test_update_unauthorized(): void
+    {
+        // First create a mobile suit
+        $createData = [
+            'data_id' => 'test_data_id',
+            'ms_name' => 'Test Mobile Suit',
+            'ms_data' => ['key' => 'value'],
+            'creator_name' => 'Test Creator',
+            'edit_password' => 'test_password',
+        ];
+        $this->postJson('/api/mobile-suits', $createData);
+
+        // Try to update with wrong credentials
+        $updateData = [
+            'data_id' => 'test_data_id',
+            'ms_name' => 'Updated Name',
+            'ms_data' => ['key' => 'value'],
+            'creator_name' => 'Wrong Creator',
+            'edit_password' => 'wrong_password',
+        ];
+
+        $response = $this->putJson('/api/mobile-suits/1', $updateData);
+
+        $response->assertStatus(403);
+    }
+
+    /**
+     * Test the mobile suits destroy endpoint with unauthorized access.
+     */
+    public function test_destroy_unauthorized(): void
+    {
+        // First create a mobile suit
+        $createData = [
+            'data_id' => 'test_data_id',
+            'ms_name' => 'Test Mobile Suit',
+            'ms_data' => ['key' => 'value'],
+            'creator_name' => 'Test Creator',
+            'edit_password' => 'test_password',
+        ];
+        $this->postJson('/api/mobile-suits', $createData);
+
+        // Try to delete with wrong credentials
+        $deleteData = [
+            'creator_name' => 'Wrong Creator',
+            'edit_password' => 'wrong_password',
+        ];
+
+        $response = $this->deleteJson('/api/mobile-suits/1', $deleteData);
+
+        $response->assertStatus(403);
     }
 }
