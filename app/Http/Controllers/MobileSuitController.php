@@ -17,8 +17,9 @@ class MobileSuitController extends Controller
     {
         $creator = $mobileSuit->creator;
         if (!$creator || $creator->creator_name !== $request->creator_name || !Hash::check($request->edit_password, $creator->edit_password)) {
-            abort(403, 'Unauthorized');
+            return response()->json(['error' => 'Unauthorized'], 403);
         }
+        return null;
     }
     /**
      * Display a listing of the resource.
@@ -82,7 +83,9 @@ class MobileSuitController extends Controller
         ]);
 
         $mobileSuit = MobileSuit::findOrFail($id);
-        $this->checkCreator($request, $mobileSuit);
+        if ($errorResponse = $this->checkCreator($request, $mobileSuit)) {
+            return $errorResponse;
+        }
         $mobileSuitData = Arr::except($validated, ['creator_name', 'edit_password']);
         $mobileSuit->update($mobileSuitData);
 
@@ -105,7 +108,9 @@ class MobileSuitController extends Controller
         ]);
 
         $mobileSuit = MobileSuit::findOrFail($id);
-        $this->checkCreator($request, $mobileSuit);
+        if ($errorResponse = $this->checkCreator($request, $mobileSuit)) {
+            return $errorResponse;
+        }
         $mobileSuit->delete();
 
         return response()->noContent();

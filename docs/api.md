@@ -191,7 +191,7 @@
 **ボディ:**
 ```json
 {
-  "message": "Unauthorized"
+  "error": "Unauthorized"
 }
 ```
 
