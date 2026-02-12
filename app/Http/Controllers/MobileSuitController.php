@@ -26,7 +26,7 @@ class MobileSuitController extends Controller
      */
     public function index()
     {
-        $mobileSuits = MobileSuit::all();
+        $mobileSuits = MobileSuit::with('creator')->get();
         return response()->json($mobileSuits);
     }
 
@@ -68,7 +68,7 @@ class MobileSuitController extends Controller
      */
     public function show(string $id)
     {
-        $mobileSuit = MobileSuit::findOrFail($id);
+        $mobileSuit = MobileSuit::with('creator')->findOrFail($id);
         return response()->json($mobileSuit);
     }
 
