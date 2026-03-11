@@ -22,6 +22,8 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post('/game-sessions', [GameSessionController::class, 'store']);
     Route::patch('/game-sessions/{id}', [GameSessionController::class, 'update']);
     Route::delete('/game-sessions/{id}', [GameSessionController::class, 'destroy']);
+    Route::post('/game-sessions/{id}/join', [GameSessionController::class, 'join']);
+    Route::delete('/game-sessions/{id}/leave', [GameSessionController::class, 'leave']);
 });
 
 // ゲームセッション（認証不要）

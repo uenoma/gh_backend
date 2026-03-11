@@ -17,4 +17,11 @@ class GameSession extends Model
     {
         return $this->belongsTo(User::class);
     }
+
+    public function members()
+    {
+        return $this->belongsToMany(User::class, 'game_session_members')
+            ->withPivot('joined_at')
+            ->orderBy('game_session_members.joined_at');
+    }
 }

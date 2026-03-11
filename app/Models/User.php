@@ -18,6 +18,12 @@ class User extends Authenticatable
         return $this->hasMany(GameSession::class);
     }
 
+    public function participatingSessions()
+    {
+        return $this->belongsToMany(GameSession::class, 'game_session_members')
+            ->withPivot('joined_at');
+    }
+
     /**
      * The attributes that are mass assignable.
      *

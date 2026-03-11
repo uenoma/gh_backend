@@ -12,7 +12,7 @@ class GameSessionController extends Controller
      */
     public function index()
     {
-        $sessions = GameSession::with('user:id,name')->latest()->get();
+        $sessions = GameSession::with(['user:id,name', 'members:id,name'])->latest()->get();
         return response()->json($sessions);
     }
 
@@ -21,7 +21,7 @@ class GameSessionController extends Controller
      */
     public function show(string $id)
     {
-        $session = GameSession::with('user:id,name')->findOrFail($id);
+        $session = GameSession::with(['user:id,name', 'members:id,name'])->findOrFail($id);
         return response()->json($session);
     }
 
@@ -38,7 +38,7 @@ class GameSessionController extends Controller
 
         $session = $request->user()->gameSessions()->create($validated);
 
-        return response()->json($session->load('user:id,name'), 201);
+        return response()->json($session->load(['user:id,name', 'members:id,name']), 201);
     }
 
     /**
@@ -60,7 +60,7 @@ class GameSessionController extends Controller
 
         $session->update($validated);
 
-        return response()->json($session->load('user:id,name'));
+        return response()->json($session->load(['user:id,name', 'members:id,name']));
     }
 
     /**
@@ -77,5 +77,41 @@ class GameSessionController extends Controller
         $session->delete();
 
         return response()->json(['message' => 'ゲームセッションを削除しました。']);
+    }
+
+    /**
+     * ゲームセッションへ参加（要認証）
+     */
+    public function join(Request $request, string $id)
+    {
+        $session = GameSession::findOrFail($id);
+
+        if ($session->members()->where('user_id', $request->user()->id)->exists()) {
+            return response()->json(['message' => '既に参加しています。'], 409);
+        }
+
+        if ($session->members()->count() >= $session->capacity) {
+            return response()->json(['message' => '定員に達しています。'], 409);
+        }
+
+        $session->members()->attach($request->user()->id);
+
+        return response()->json($session->load(['user:id,name', 'members:id,name']));
+    }
+
+    /**
+     * ゲームセッションから離脱（要認証）
+     */
+    public function leave(Request $request, string $id)
+    {
+        $session = GameSession::findOrFail($id);
+
+        if (!$session->members()->where('user_id', $request->user()->id)->exists()) {
+            return response()->json(['message' => '参加していません。'], 409);
+        }
+
+        $session->members()->detach($request->user()->id);
+
+        return response()->json(['message' => 'ゲームセッションから離脱しました。']);
     }
 }
