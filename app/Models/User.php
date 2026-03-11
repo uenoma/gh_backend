@@ -13,6 +13,11 @@ class User extends Authenticatable
     /** @use HasFactory<\Database\Factories\UserFactory> */
     use HasApiTokens, HasFactory, Notifiable;
 
+    public function gameSessions()
+    {
+        return $this->hasMany(GameSession::class);
+    }
+
     /**
      * The attributes that are mass assignable.
      *
