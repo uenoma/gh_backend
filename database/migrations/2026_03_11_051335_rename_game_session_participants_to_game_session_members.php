@@ -11,7 +11,9 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::rename('game_session_participants', 'game_session_members');
+        if (!Schema::hasTable('game_session_members') && Schema::hasTable('game_session_participants')) {
+            Schema::rename('game_session_participants', 'game_session_members');
+        }
     }
 
     /**
