@@ -20,6 +20,7 @@ Route::middleware('auth:sanctum')->group(function () {
 
     // ゲームセッション（認証必要）
     Route::post('/game-sessions', [GameSessionController::class, 'store']);
+    Route::patch('/game-sessions/{id}', [GameSessionController::class, 'update']);
     Route::delete('/game-sessions/{id}', [GameSessionController::class, 'destroy']);
 });
 

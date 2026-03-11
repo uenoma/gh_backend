@@ -42,6 +42,28 @@ class GameSessionController extends Controller
     }
 
     /**
+     * ゲームセッション編集（要認証・自分のセッションのみ）
+     */
+    public function update(Request $request, string $id)
+    {
+        $session = GameSession::findOrFail($id);
+
+        if ($session->user_id !== $request->user()->id) {
+            return response()->json(['message' => '編集する権限がありません。'], 403);
+        }
+
+        $validated = $request->validate([
+            'name'        => ['sometimes', 'required', 'string', 'max:255'],
+            'description' => ['nullable', 'string'],
+            'capacity'    => ['sometimes', 'required', 'integer', 'min:1'],
+        ]);
+
+        $session->update($validated);
+
+        return response()->json($session->load('user:id,name'));
+    }
+
+    /**
      * ゲームセッション削除（要認証・自分のセッションのみ）
      */
     public function destroy(Request $request, string $id)
