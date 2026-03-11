@@ -6,6 +6,152 @@
 
 ベースURL: `https://dndhideout.com/gh/gh_backend/public`
 
+---
+
+## 認証
+
+このAPIはLaravel Sanctumによるトークン認証を使用します。
+
+認証が必要なエンドポイントには、リクエストヘッダーに以下を付与してください：
+
+```
+Authorization: Bearer {token}
+```
+
+トークンはユーザー登録またはログイン時にレスポンスとして返されます。
+
+---
+
+## ユーザー管理エンドポイント
+
+### 1. ユーザー登録
+
+**POST** `/api/register`
+
+新しいユーザーアカウントを作成します。成功するとAPIトークンを返します。
+
+#### リクエストボディ
+
+| フィールド | タイプ | 必須 | 説明 |
+|------------|--------|------|------|
+| `name` | string | ✅ | アカウント名（英数字・`_` `-` `.` のみ、ユニーク） |
+| `email` | string | ✅ | メールアドレス（ユニーク） |
+| `password` | string | ✅ | パスワード（8文字以上） |
+| `password_confirmation` | string | ✅ | パスワード確認 |
+
+```json
+{
+  "name": "john_doe",
+  "email": "john@example.com",
+  "password": "password123",
+  "password_confirmation": "password123"
+}
+```
+
+#### レスポンス
+
+**ステータスコード:** 201 Created
+
+```json
+{
+  "token": "1|xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
+  "user": {
+    "id": 1,
+    "name": "john_doe",
+    "email": "john@example.com",
+    "created_at": "2026-03-11T00:00:00.000000Z",
+    "updated_at": "2026-03-11T00:00:00.000000Z"
+  }
+}
+```
+
+---
+
+### 2. ログイン
+
+**POST** `/api/login`
+
+認証情報を検証し、APIトークンを返します。
+
+#### リクエストボディ
+
+| フィールド | タイプ | 必須 | 説明 |
+|------------|--------|------|------|
+| `email` | string | ✅ | メールアドレス |
+| `password` | string | ✅ | パスワード |
+
+```json
+{
+  "email": "john@example.com",
+  "password": "password123"
+}
+```
+
+#### レスポンス
+
+**ステータスコード:** 200 OK
+
+```json
+{
+  "token": "2|xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
+  "user": {
+    "id": 1,
+    "name": "john_doe",
+    "email": "john@example.com",
+    "created_at": "2026-03-11T00:00:00.000000Z",
+    "updated_at": "2026-03-11T00:00:00.000000Z"
+  }
+}
+```
+
+**認証失敗時（422）:**
+```json
+{
+  "message": "メールアドレスまたはパスワードが正しくありません。",
+  "errors": {
+    "email": ["メールアドレスまたはパスワードが正しくありません。"]
+  }
+}
+```
+
+---
+
+### 3. ログアウト
+
+**POST** `/api/logout` 🔒 *認証必要*
+
+現在のアクセストークンを無効化します。
+
+#### レスポンス
+
+**ステータスコード:** 200 OK
+
+```json
+{
+  "message": "ログアウトしました。"
+}
+```
+
+---
+
+### 4. 退会
+
+**DELETE** `/api/user` 🔒 *認証必要*
+
+アカウントと全てのトークンを削除します。
+
+#### レスポンス
+
+**ステータスコード:** 200 OK
+
+```json
+{
+  "message": "退会が完了しました。"
+}
+```
+
+---
+
 ## データモデル
 
 ### MobileSuit
@@ -43,7 +189,9 @@
 - `body_part`: ボディパーツ
 - `body_specs`: ボディスペック
 
-## エンドポイント
+---
+
+## 機体データエンドポイント
 
 ### 1. 一覧取得
 
@@ -231,6 +379,40 @@
 ## 使用例
 
 ### cURLでの使用例
+
+#### ユーザー登録
+```bash
+curl -X POST http://dndhideout.com/gh/gh_backend/public/api/register \
+  -H "Content-Type: application/json" \
+  -d '{
+    "name": "john_doe",
+    "email": "john@example.com",
+    "password": "password123",
+    "password_confirmation": "password123"
+  }'
+```
+
+#### ログイン
+```bash
+curl -X POST http://dndhideout.com/gh/gh_backend/public/api/login \
+  -H "Content-Type: application/json" \
+  -d '{
+    "email": "john@example.com",
+    "password": "password123"
+  }'
+```
+
+#### ログアウト
+```bash
+curl -X POST http://dndhideout.com/gh/gh_backend/public/api/logout \
+  -H "Authorization: Bearer {token}"
+```
+
+#### 退会
+```bash
+curl -X DELETE http://dndhideout.com/gh/gh_backend/public/api/user \
+  -H "Authorization: Bearer {token}"
+```
 
 #### 一覧取得
 ```bash
