@@ -6,6 +6,9 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Password;
+use Illuminate\Auth\Events\PasswordReset;
+use Illuminate\Support\Str;
 use Illuminate\Validation\ValidationException;
 
 class AuthController extends Controller
@@ -83,5 +86,81 @@ class AuthController extends Controller
         $user->delete();
 
         return response()->json(['message' => '退会が完了しました。']);
+    }
+
+    /**
+     * パスワードリセットメール送信
+     */
+    public function forgotPassword(Request $request)
+    {
+        $request->validate([
+            'email' => ['required', 'string', 'email'],
+        ]);
+
+        $status = Password::sendResetLink($request->only('email'));
+
+        if ($status !== Password::RESET_LINK_SENT) {
+            throw ValidationException::withMessages([
+                'email' => [__($status)],
+            ]);
+        }
+
+        return response()->json(['message' => 'パスワードリセットメールを送信しました。']);
+    }
+
+    /**
+     * パスワードリセット実行
+     */
+    public function resetPassword(Request $request)
+    {
+        $request->validate([
+            'token'    => ['required', 'string'],
+            'email'    => ['required', 'string', 'email'],
+            'password' => ['required', 'string', 'min:8', 'confirmed'],
+        ]);
+
+        $status = Password::reset(
+            $request->only('email', 'password', 'password_confirmation', 'token'),
+            function (User $user, string $password) {
+                $user->forceFill([
+                    'password'       => Hash::make($password),
+                    'remember_token' => Str::random(60),
+                ])->save();
+
+                event(new PasswordReset($user));
+            }
+        );
+
+        if ($status !== Password::PASSWORD_RESET) {
+            throw ValidationException::withMessages([
+                'email' => [__($status)],
+            ]);
+        }
+
+        return response()->json(['message' => 'パスワードをリセットしました。']);
+    }
+
+    /**
+     * パスワード変更（認証済みユーザー）
+     */
+    public function changePassword(Request $request)
+    {
+        $request->validate([
+            'current_password' => ['required', 'string'],
+            'password'         => ['required', 'string', 'min:8', 'confirmed'],
+        ]);
+
+        /** @var User $user */
+        $user = $request->user();
+
+        if (!Hash::check($request->current_password, $user->password)) {
+            throw ValidationException::withMessages([
+                'current_password' => ['現在のパスワードが正しくありません。'],
+            ]);
+        }
+
+        $user->update(['password' => Hash::make($request->password)]);
+
+        return response()->json(['message' => 'パスワードを変更しました。']);
     }
 }

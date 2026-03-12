@@ -9,6 +9,8 @@ use Illuminate\Support\Facades\Route;
 // ユーザー管理（認証不要）
 Route::post('/register', [AuthController::class, 'register']);
 Route::post('/login', [AuthController::class, 'login']);
+Route::post('/forgot-password', [AuthController::class, 'forgotPassword']);
+Route::post('/reset-password', [AuthController::class, 'resetPassword']);
 
 // ユーザー管理（認証必要）
 Route::middleware('auth:sanctum')->group(function () {
@@ -17,6 +19,7 @@ Route::middleware('auth:sanctum')->group(function () {
     });
     Route::post('/logout', [AuthController::class, 'logout']);
     Route::delete('/user', [AuthController::class, 'withdraw']);
+    Route::put('/user/password', [AuthController::class, 'changePassword']);
 
     // ゲームセッション（認証必要）
     Route::post('/game-sessions', [GameSessionController::class, 'store']);

@@ -152,6 +152,136 @@ Authorization: Bearer {token}
 
 ---
 
+### 5. パスワードリセットメール送信
+
+**POST** `/api/forgot-password`
+
+パスワードリセット用のメールを送信します。登録済みのメールアドレスにリセットリンクが送られます。
+
+#### リクエストボディ
+
+| フィールド | タイプ | 必須 | 説明 |
+|------------|--------|------|------|
+| `email` | string | ✅ | 登録済みのメールアドレス |
+
+```json
+{
+  "email": "john@example.com"
+}
+```
+
+#### レスポンス
+
+**ステータスコード:** 200 OK
+
+```json
+{
+  "message": "パスワードリセットメールを送信しました。"
+}
+```
+
+**バリデーションエラー時（422）:**
+```json
+{
+  "message": "...",
+  "errors": {
+    "email": ["..."]
+  }
+}
+```
+
+---
+
+### 6. パスワードリセット実行
+
+**POST** `/api/reset-password`
+
+メールで受け取ったトークンを使用してパスワードをリセットします。
+
+#### リクエストボディ
+
+| フィールド | タイプ | 必須 | 説明 |
+|------------|--------|------|------|
+| `token` | string | ✅ | メールで受け取ったリセットトークン |
+| `email` | string | ✅ | 登録済みのメールアドレス |
+| `password` | string | ✅ | 新しいパスワード（8文字以上） |
+| `password_confirmation` | string | ✅ | 新しいパスワード確認 |
+
+```json
+{
+  "token": "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
+  "email": "john@example.com",
+  "password": "newpassword123",
+  "password_confirmation": "newpassword123"
+}
+```
+
+#### レスポンス
+
+**ステータスコード:** 200 OK
+
+```json
+{
+  "message": "パスワードをリセットしました。"
+}
+```
+
+**トークン無効時（422）:**
+```json
+{
+  "message": "...",
+  "errors": {
+    "email": ["..."]
+  }
+}
+```
+
+---
+
+### 7. パスワード変更
+
+**PUT** `/api/user/password` 🔒 *認証必要*
+
+現在のパスワードを確認した上で新しいパスワードに変更します。
+
+#### リクエストボディ
+
+| フィールド | タイプ | 必須 | 説明 |
+|------------|--------|------|------|
+| `current_password` | string | ✅ | 現在のパスワード |
+| `password` | string | ✅ | 新しいパスワード（8文字以上） |
+| `password_confirmation` | string | ✅ | 新しいパスワード確認 |
+
+```json
+{
+  "current_password": "oldpassword123",
+  "password": "newpassword123",
+  "password_confirmation": "newpassword123"
+}
+```
+
+#### レスポンス
+
+**ステータスコード:** 200 OK
+
+```json
+{
+  "message": "パスワードを変更しました。"
+}
+```
+
+**現在のパスワード誤り時（422）:**
+```json
+{
+  "message": "現在のパスワードが正しくありません。",
+  "errors": {
+    "current_password": ["現在のパスワードが正しくありません。"]
+  }
+}
+```
+
+---
+
 ## データモデル
 
 ### MobileSuit
