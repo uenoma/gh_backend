@@ -15,7 +15,7 @@ class ChatChannelController extends Controller
     {
         $userId = $request->user()->id;
 
-        $channels = ChatChannel::with('creator:id,name')->latest()->get();
+        $channels = ChatChannel::with('creator:id,name')->orderByDesc('is_system')->latest()->get();
 
         // 参加チャンネルごとの未読件数を1クエリで取得
         $unreadCounts = DB::table('chat_messages')
