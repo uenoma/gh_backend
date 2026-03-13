@@ -36,7 +36,7 @@ class MobileSuitController extends Controller
     public function store(Request $request)
     {
         $validated = $request->validate([
-            'data_id' => 'required|string',
+            'data_id' => 'required|string|unique:mobile_suits,data_id',
             'ms_number' => 'nullable|string',
             'ms_name' => 'required|string',
             'ms_name_optional' => 'nullable|string',
@@ -46,6 +46,7 @@ class MobileSuitController extends Controller
             'edit_password' => 'required|string',
         ], [
             'data_id.required' => 'データIDは必須です',
+            'data_id.unique' => 'このデータIDは既に使用されています',
             'ms_name.required' => 'MS名称は必須です',
             'ms_data.required' => 'MSデータは必須です',
             'creator_name.required' => '作成者名は必須です',
@@ -78,7 +79,7 @@ class MobileSuitController extends Controller
     public function update(Request $request, string $id)
     {
         $validated = $request->validate([
-            'data_id' => 'required|string',
+            'data_id' => 'required|string|unique:mobile_suits,data_id,' . $id,
             'ms_number' => 'nullable|string',
             'ms_name' => 'required|string',
             'ms_name_optional' => 'nullable|string',
@@ -88,6 +89,7 @@ class MobileSuitController extends Controller
             'edit_password' => 'required|string',
         ], [
             'data_id.required' => 'データIDは必須です',
+            'data_id.unique' => 'このデータIDは既に使用されています',
             'ms_name.required' => 'MS名称は必須です',
             'ms_data.required' => 'MSデータは必須です',
             'creator_name.required' => '作成者名は必須です',

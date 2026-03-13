@@ -25,12 +25,16 @@ class MobileSuitSeeder extends Seeder
             $path = base_path('samples/' . $file);
             if (File::exists($path)) {
                 $data = json_decode(File::get($path), true);
-                $mobileSuit = MobileSuit::create($data);
-                // Add default creator
-                $mobileSuit->creator()->create([
-                    'creator_name' => 'admin',
-                    'edit_password' => Hash::make('password'),
-                ]);
+                $mobileSuit = MobileSuit::firstOrCreate(
+                    ['data_id' => $data['data_id']],
+                    $data
+                );
+                if (!$mobileSuit->creator()->exists()) {
+                    $mobileSuit->creator()->create([
+                        'creator_name' => 'admin',
+                        'edit_password' => Hash::make('password'),
+                    ]);
+                }
             }
         }
     }
