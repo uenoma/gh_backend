@@ -1,6 +1,8 @@
 <?php
 
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\ChatChannelController;
+use App\Http\Controllers\ChatMessageController;
 use App\Http\Controllers\GameSessionController;
 use App\Http\Controllers\MobileSuitController;
 use Illuminate\Http\Request;
@@ -20,6 +22,21 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post('/logout', [AuthController::class, 'logout']);
     Route::delete('/user', [AuthController::class, 'withdraw']);
     Route::put('/user/password', [AuthController::class, 'changePassword']);
+
+    // チャットチャンネル（認証必要）
+    Route::get('/chat-channels', [ChatChannelController::class, 'index']);
+    Route::get('/chat-channels/{id}', [ChatChannelController::class, 'show']);
+    Route::post('/chat-channels', [ChatChannelController::class, 'store']);
+    Route::patch('/chat-channels/{id}', [ChatChannelController::class, 'update']);
+    Route::delete('/chat-channels/{id}', [ChatChannelController::class, 'destroy']);
+    Route::post('/chat-channels/{id}/join', [ChatChannelController::class, 'join']);
+    Route::delete('/chat-channels/{id}/leave', [ChatChannelController::class, 'leave']);
+    Route::post('/chat-channels/{id}/read', [ChatChannelController::class, 'markAsRead']);
+
+    // チャットメッセージ（認証必要）
+    Route::get('/chat-channels/{channelId}/messages', [ChatMessageController::class, 'index']);
+    Route::post('/chat-channels/{channelId}/messages', [ChatMessageController::class, 'store']);
+    Route::delete('/chat-channels/{channelId}/messages/{messageId}', [ChatMessageController::class, 'destroy']);
 
     // ゲームセッション（認証必要）
     Route::post('/game-sessions', [GameSessionController::class, 'store']);

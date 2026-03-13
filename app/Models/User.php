@@ -19,6 +19,11 @@ class User extends Authenticatable
         return $this->hasMany(GameSession::class);
     }
 
+    public function chatChannels()
+    {
+        return $this->hasMany(ChatChannel::class);
+    }
+
     public function participatingSessions()
     {
         return $this->belongsToMany(GameSession::class, 'game_session_members')
