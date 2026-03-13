@@ -124,6 +124,10 @@ class ChatChannelController extends Controller
     {
         $channel = ChatChannel::findOrFail($id);
 
+        if ($channel->is_system) {
+            return response()->json(['message' => 'システムチャンネルは全員が参加しています。'], 409);
+        }
+
         if ($channel->members()->where('user_id', $request->user()->id)->exists()) {
             return response()->json(['message' => '既に参加しています。'], 409);
         }
@@ -139,6 +143,10 @@ class ChatChannelController extends Controller
     public function leave(Request $request, string $id)
     {
         $channel = ChatChannel::findOrFail($id);
+
+        if ($channel->is_system) {
+            return response()->json(['message' => 'システムチャンネルから退出することはできません。'], 403);
+        }
 
         if (!$channel->members()->where('user_id', $request->user()->id)->exists()) {
             return response()->json(['message' => '参加していません。'], 409);

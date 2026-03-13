@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
+use App\Models\ChatChannel;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
@@ -31,6 +32,15 @@ class AuthController extends Controller
         ]);
 
         $token = $user->createToken('auth_token')->plainTextToken;
+
+        // システムチャンネルに自動参加
+        $now = now();
+        ChatChannel::where('is_system', true)->get()->each(function ($channel) use ($user, $now) {
+            $channel->members()->attach($user->id, [
+                'joined_at'    => $now,
+                'last_read_at' => $now,
+            ]);
+        });
 
         return response()->json([
             'token' => $token,

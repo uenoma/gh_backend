@@ -3,6 +3,7 @@
 namespace Database\Seeders;
 
 use App\Models\ChatChannel;
+use App\Models\User;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
@@ -15,7 +16,7 @@ class ChatChannelSeeder extends Seeder
      */
     public function run(): void
     {
-        ChatChannel::firstOrCreate(
+        $general = ChatChannel::firstOrCreate(
             ['name' => 'general'],
             [
                 'description' => '一般チャンネル',
@@ -23,5 +24,18 @@ class ChatChannelSeeder extends Seeder
                 'is_system'   => true,
             ]
         );
+
+        // 既存ユーザーを全員追加（既に参加済みのユーザーはスキップ）
+        $now = now();
+        $existingMemberIds = $general->members()->pluck('users.id');
+
+        User::whereNotIn('id', $existingMemberIds)
+            ->pluck('id')
+            ->each(function ($userId) use ($general, $now) {
+                $general->members()->attach($userId, [
+                    'joined_at'    => $now,
+                    'last_read_at' => $now,
+                ]);
+            });
     }
 }
