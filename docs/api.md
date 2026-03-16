@@ -684,7 +684,61 @@ Authorization: Bearer {token}
 
 ---
 
-### 11. イニングのPlot登録・更新
+### 11. イニングのPlot一覧取得
+
+**GET** `/api/game-sessions/{id}/plots/{inning}`
+
+指定したイニングの全参加者分のPlot・損害状況を取得します。
+
+#### パラメータ
+
+| パラメータ | タイプ | 必須 | 説明 |
+|------------|--------|------|------|
+| `id` | integer | ✅ | ゲームセッションID |
+| `inning` | integer | ✅ | イニング番号（0〜99） |
+
+#### レスポンス
+
+**ステータスコード:** 200 OK
+
+```json
+[
+  {
+    "id": 1,
+    "game_session_id": 1,
+    "user_id": 1,
+    "inning": 0,
+    "plot": {
+      "hex": "0312",
+      "direction": 3,
+      "altitude": 0,
+      "inertia": ["1-2"]
+    },
+    "damage": null,
+    "created_at": "2026-03-16T00:00:00.000000Z",
+    "updated_at": "2026-03-16T00:00:00.000000Z"
+  },
+  {
+    "id": 2,
+    "game_session_id": 1,
+    "user_id": 2,
+    "inning": 0,
+    "plot": { "hex": "0510", "direction": 5, "altitude": 0, "inertia": null },
+    "damage": null,
+    "created_at": "2026-03-16T00:00:00.000000Z",
+    "updated_at": "2026-03-16T00:00:00.000000Z"
+  }
+]
+```
+
+**イニング範囲外時（422）:**
+```json
+{ "message": "inningは0〜99の範囲で指定してください。" }
+```
+
+---
+
+### 12. イニングのPlot登録・更新
 
 **PUT** `/api/game-sessions/{id}/plots/{inning}` 🔒 *認証必要*
 
@@ -764,7 +818,7 @@ Authorization: Bearer {token}
 
 ---
 
-### 12. 戦闘マップサイズ取得
+### 13. 戦闘マップサイズ取得
 
 **GET** `/api/game-sessions/{id}/map-size`
 
@@ -789,7 +843,7 @@ Authorization: Bearer {token}
 
 ---
 
-### 13. 戦闘マップサイズ更新
+### 14. 戦闘マップサイズ更新
 
 **PUT** `/api/game-sessions/{id}/map-size` 🔒 *認証必要*
 

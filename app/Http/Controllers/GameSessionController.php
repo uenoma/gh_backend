@@ -208,6 +208,24 @@ class GameSessionController extends Controller
     }
 
     /**
+     * 指定イニングの全参加者分のPlot一覧取得
+     */
+    public function getInningPlots(string $id, int $inning)
+    {
+        if ($inning < 0 || $inning > 99) {
+            return response()->json(['message' => 'inningは0〜99の範囲で指定してください。'], 422);
+        }
+
+        $session = GameSession::findOrFail($id);
+
+        $plots = GameSessionPlot::where('game_session_id', $session->id)
+            ->where('inning', $inning)
+            ->get();
+
+        return response()->json($plots);
+    }
+
+    /**
      * イニングの行動計画・Plotを登録・更新（要認証・参加者のみ）
      */
     public function upsertPlot(Request $request, string $id, int $inning)

@@ -55,5 +55,6 @@ Route::get('/game-sessions', [GameSessionController::class, 'index']);
 Route::get('/game-sessions/{id}', [GameSessionController::class, 'show']);
 Route::get('/game-sessions/{id}/report', [GameSessionController::class, 'report']);
 Route::get('/game-sessions/{id}/map-size', [GameSessionController::class, 'getMapSize']);
+Route::get('/game-sessions/{id}/plots/{inning}', [GameSessionController::class, 'getInningPlots']);
 
 Route::apiResource('mobile-suits', MobileSuitController::class);
