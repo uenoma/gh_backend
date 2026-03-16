@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\GameSession;
+use App\Models\MobileSuit;
 use Illuminate\Http\Request;
 
 class GameSessionController extends Controller
@@ -95,6 +96,28 @@ class GameSessionController extends Controller
         }
 
         $session->members()->attach($request->user()->id);
+
+        return response()->json($session->load(['user:id,name', 'members:id,name']));
+    }
+
+    /**
+     * 使用機体を選択（要認証・参加者のみ）
+     */
+    public function selectMobileSuit(Request $request, string $id)
+    {
+        $session = GameSession::findOrFail($id);
+
+        if (!$session->members()->where('user_id', $request->user()->id)->exists()) {
+            return response()->json(['message' => 'このセッションに参加していません。'], 403);
+        }
+
+        $validated = $request->validate([
+            'mobile_suit_id' => ['nullable', 'integer', 'exists:mobile_suits,id'],
+        ]);
+
+        $session->members()->updateExistingPivot($request->user()->id, [
+            'mobile_suit_id' => $validated['mobile_suit_id'] ?? null,
+        ]);
 
         return response()->json($session->load(['user:id,name', 'members:id,name']));
     }
