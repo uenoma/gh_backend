@@ -171,6 +171,43 @@ class GameSessionController extends Controller
     }
 
     /**
+     * 戦闘マップサイズ取得
+     */
+    public function getMapSize(string $id)
+    {
+        $session = GameSession::findOrFail($id);
+
+        return response()->json([
+            'map_width'  => $session->map_width,
+            'map_height' => $session->map_height,
+        ]);
+    }
+
+    /**
+     * 戦闘マップサイズ更新（要認証・作成者のみ）
+     */
+    public function updateMapSize(Request $request, string $id)
+    {
+        $session = GameSession::findOrFail($id);
+
+        if ($session->user_id !== $request->user()->id) {
+            return response()->json(['message' => '編集する権限がありません。'], 403);
+        }
+
+        $validated = $request->validate([
+            'map_width'  => ['sometimes', 'required', 'integer', 'min:1', 'max:99'],
+            'map_height' => ['sometimes', 'required', 'integer', 'min:1', 'max:99'],
+        ]);
+
+        $session->update($validated);
+
+        return response()->json([
+            'map_width'  => $session->map_width,
+            'map_height' => $session->map_height,
+        ]);
+    }
+
+    /**
      * イニングの行動計画・Plotを登録・更新（要認証・参加者のみ）
      */
     public function upsertPlot(Request $request, string $id, int $inning)

@@ -13,6 +13,8 @@ class GameSession extends Model
         'name',
         'description',
         'capacity',
+        'map_width',
+        'map_height',
     ];
 
     public function user()

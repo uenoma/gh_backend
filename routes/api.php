@@ -47,11 +47,13 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::put('/game-sessions/{id}/mobile-suit', [GameSessionController::class, 'selectMobileSuit']);
     Route::put('/game-sessions/{id}/pilot-point', [GameSessionController::class, 'updatePilotPoint']);
     Route::put('/game-sessions/{id}/plots/{inning}', [GameSessionController::class, 'upsertPlot']);
+    Route::put('/game-sessions/{id}/map-size', [GameSessionController::class, 'updateMapSize']);
 });
 
 // ゲームセッション（認証不要）
 Route::get('/game-sessions', [GameSessionController::class, 'index']);
 Route::get('/game-sessions/{id}', [GameSessionController::class, 'show']);
 Route::get('/game-sessions/{id}/report', [GameSessionController::class, 'report']);
+Route::get('/game-sessions/{id}/map-size', [GameSessionController::class, 'getMapSize']);
 
 Route::apiResource('mobile-suits', MobileSuitController::class);
