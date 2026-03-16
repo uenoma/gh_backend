@@ -46,6 +46,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::delete('/game-sessions/{id}/leave', [GameSessionController::class, 'leave']);
     Route::put('/game-sessions/{id}/mobile-suit', [GameSessionController::class, 'selectMobileSuit']);
     Route::put('/game-sessions/{id}/pilot-point', [GameSessionController::class, 'updatePilotPoint']);
+    Route::put('/game-sessions/{id}/plots/{inning}', [GameSessionController::class, 'upsertPlot']);
 });
 
 // ゲームセッション（認証不要）

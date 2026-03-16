@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\GameSession;
+use App\Models\GameSessionPlot;
 use App\Models\MobileSuit;
 use Illuminate\Http\Request;
 
@@ -27,7 +28,7 @@ class GameSessionController extends Controller
     }
 
     /**
-     * ゲームセッションレポート取得（参加者・使用機体・パイロットポイント）
+     * ゲームセッションレポート取得（参加者・使用機体・パイロットポイント・Plot）
      */
     public function report(string $id)
     {
@@ -40,7 +41,17 @@ class GameSessionController extends Controller
             ->get(['id', 'ms_number', 'ms_name', 'ms_name_optional', 'ms_icon'])
             ->keyBy('id');
 
-        $membersData = $members->map(function ($member) use ($mobileSuits) {
+        $plotsByUser = GameSessionPlot::where('game_session_id', $session->id)
+            ->get()
+            ->groupBy('user_id');
+
+        $membersData = $members->map(function ($member) use ($mobileSuits, $plotsByUser) {
+            $userPlots = ($plotsByUser->get($member->id) ?? collect())
+                ->mapWithKeys(fn ($p) => [$p->inning => [
+                    'plot'   => $p->plot,
+                    'damage' => $p->damage,
+                ]]);
+
             return [
                 'id'          => $member->id,
                 'name'        => $member->name,
@@ -49,6 +60,7 @@ class GameSessionController extends Controller
                 'mobile_suit' => $member->pivot->mobile_suit_id
                     ? $mobileSuits->get($member->pivot->mobile_suit_id)
                     : null,
+                'plots'       => $userPlots,
             ];
         });
 
@@ -156,6 +168,47 @@ class GameSessionController extends Controller
         ]);
 
         return response()->json($session->load(['user:id,name', 'members:id,name']));
+    }
+
+    /**
+     * イニングの行動計画・Plotを登録・更新（要認証・参加者のみ）
+     */
+    public function upsertPlot(Request $request, string $id, int $inning)
+    {
+        if ($inning < 0 || $inning > 99) {
+            return response()->json(['message' => 'inningは0〜99の範囲で指定してください。'], 422);
+        }
+
+        $session = GameSession::findOrFail($id);
+
+        if (!$session->members()->where('user_id', $request->user()->id)->exists()) {
+            return response()->json(['message' => 'このセッションに参加していません。'], 403);
+        }
+
+        $validated = $request->validate([
+            'plot'               => ['sometimes', 'nullable', 'array'],
+            'plot.hex'           => ['sometimes', 'nullable', 'string', 'regex:/^\d{4}$/'],
+            'plot.direction'     => ['sometimes', 'nullable', 'integer', 'min:1', 'max:6'],
+            'plot.altitude'      => ['sometimes', 'nullable', 'integer'],
+            'plot.inertia'       => ['sometimes', 'nullable', 'array', 'max:3'],
+            'plot.inertia.*'     => ['string', 'regex:/^[0-9u]-\d+$/'],
+            'damage'             => ['sometimes', 'nullable', 'array'],
+            'damage.*'           => ['array'],
+        ]);
+
+        $plot = GameSessionPlot::updateOrCreate(
+            [
+                'game_session_id' => $session->id,
+                'user_id'        => $request->user()->id,
+                'inning'         => $inning,
+            ],
+            array_filter([
+                'plot'   => $validated['plot'] ?? null,
+                'damage' => $validated['damage'] ?? null,
+            ], fn ($v) => $v !== null)
+        );
+
+        return response()->json($plot);
     }
 
     /**

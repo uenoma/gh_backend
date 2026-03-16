@@ -655,6 +655,19 @@ Authorization: Bearer {token}
         "ms_name": "ザクⅡ",
         "ms_name_optional": null,
         "ms_icon": ""
+      },
+      "plots": {
+        "0": {
+          "plot": { "hex": "0312", "direction": 3, "altitude": 0, "inertia": ["1-2"] },
+          "damage": null
+        },
+        "1": {
+          "plot": { "hex": "0211", "direction": 2, "altitude": -1, "inertia": ["3-5", "u-2"] },
+          "damage": [
+            { "description": "右腕部に2ダメージ" },
+            { "description": "脚部に1ダメージ" }
+          ]
+        }
       }
     },
     {
@@ -662,10 +675,91 @@ Authorization: Bearer {token}
       "name": "jane_doe",
       "pilot_point": 7,
       "joined_at": "2026-03-16T00:01:00.000000Z",
-      "mobile_suit": null
+      "mobile_suit": null,
+      "plots": {}
     }
   ]
 }
+```
+
+---
+
+### 11. イニングのPlot登録・更新
+
+**PUT** `/api/game-sessions/{id}/plots/{inning}` 🔒 *認証必要*
+
+指定したイニングの行動計画（plot）および損害状況（damage）を登録または更新します。既にレコードが存在する場合は上書きされます。
+
+#### パラメータ
+
+| パラメータ | タイプ | 必須 | 説明 |
+|------------|--------|------|------|
+| `id` | integer | ✅ | ゲームセッションID |
+| `inning` | integer | ✅ | イニング番号（0〜99） |
+
+#### リクエストボディ
+
+`plot` と `damage` はそれぞれ独立して送信可能です（片方だけの更新も可）。
+
+| フィールド | タイプ | 必須 | 説明 |
+|------------|--------|------|------|
+| `plot` | object\|null | ❌ | 行動計画JSONオブジェクト |
+| `plot.hex` | string | ❌ | 現在位置・ヘックス番号（4桁数字、例: `"0312"`） |
+| `plot.direction` | integer | ❌ | 方向（1〜6） |
+| `plot.altitude` | integer | ❌ | 高度（マイナスあり） |
+| `plot.inertia` | array\|null | ❌ | 慣性（最大3つ、例: `["1-2", "3-5"]`） |
+| `plot.inertia[]` | string | ❌ | 慣性1件（`数字またはu` + `-` + `数字`、例: `"1-2"`, `"u-2"`） |
+| `damage` | array\|null | ❌ | 損害状況の配列（複数の損害を記録可） |
+| `damage[].` | object | ❌ | 損害1件分のJSONオブジェクト |
+
+```json
+{
+  "plot": {
+    "hex": "0312",
+    "direction": 3,
+    "altitude": -1,
+    "inertia": ["1-2", "3-5", "u-2"]
+  },
+  "damage": [
+    { "description": "右腕部に2ダメージ" },
+    { "description": "脚部に1ダメージ" }
+  ]
+}
+```
+
+#### レスポンス
+
+**ステータスコード:** 200 OK
+
+```json
+{
+  "id": 1,
+  "game_session_id": 1,
+  "user_id": 1,
+  "inning": 0,
+  "plot": {
+    "hex": "0312",
+    "direction": 3,
+    "altitude": -1,
+    "inertia": ["1-2", "3-5", "u-2"]
+  },
+  "damage": [
+    { "description": "右腕部に2ダメージ" },
+    { "description": "脚部に1ダメージ" }
+  ],
+  "created_at": "2026-03-16T00:00:00.000000Z",
+  "updated_at": "2026-03-16T00:00:00.000000Z"
+}
+```
+
+**権限エラー時（403）:**
+```json
+{ "message": "このセッションに参加していません。" }
+```
+
+**イニング範囲外時（422）:**
+```json
+{ "message": "inningは0〜99の範囲で指定してください。" }
 ```
 
 ---
