@@ -21,7 +21,7 @@ class GameSession extends Model
     public function members()
     {
         return $this->belongsToMany(User::class, 'game_session_members')
-            ->withPivot('joined_at', 'mobile_suit_id')
+            ->withPivot('joined_at', 'mobile_suit_id', 'pilot_point')
             ->orderBy('game_session_members.joined_at');
     }
 }

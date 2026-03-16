@@ -45,10 +45,12 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post('/game-sessions/{id}/join', [GameSessionController::class, 'join']);
     Route::delete('/game-sessions/{id}/leave', [GameSessionController::class, 'leave']);
     Route::put('/game-sessions/{id}/mobile-suit', [GameSessionController::class, 'selectMobileSuit']);
+    Route::put('/game-sessions/{id}/pilot-point', [GameSessionController::class, 'updatePilotPoint']);
 });
 
 // ゲームセッション（認証不要）
 Route::get('/game-sessions', [GameSessionController::class, 'index']);
 Route::get('/game-sessions/{id}', [GameSessionController::class, 'show']);
+Route::get('/game-sessions/{id}/report', [GameSessionController::class, 'report']);
 
 Route::apiResource('mobile-suits', MobileSuitController::class);

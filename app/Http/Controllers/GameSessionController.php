@@ -27,6 +27,42 @@ class GameSessionController extends Controller
     }
 
     /**
+     * ゲームセッションレポート取得（参加者・使用機体・パイロットポイント）
+     */
+    public function report(string $id)
+    {
+        $session = GameSession::with(['user:id,name'])->findOrFail($id);
+
+        $members = $session->members()->get();
+
+        $mobileSuitIds = $members->pluck('pivot.mobile_suit_id')->filter()->unique();
+        $mobileSuits = MobileSuit::whereIn('id', $mobileSuitIds)
+            ->get(['id', 'ms_number', 'ms_name', 'ms_name_optional', 'ms_icon'])
+            ->keyBy('id');
+
+        $membersData = $members->map(function ($member) use ($mobileSuits) {
+            return [
+                'id'          => $member->id,
+                'name'        => $member->name,
+                'pilot_point' => $member->pivot->pilot_point,
+                'joined_at'   => $member->pivot->joined_at,
+                'mobile_suit' => $member->pivot->mobile_suit_id
+                    ? $mobileSuits->get($member->pivot->mobile_suit_id)
+                    : null,
+            ];
+        });
+
+        return response()->json([
+            'id'          => $session->id,
+            'name'        => $session->name,
+            'description' => $session->description,
+            'capacity'    => $session->capacity,
+            'user'        => $session->user,
+            'members'     => $membersData,
+        ]);
+    }
+
+    /**
      * ゲームセッション作成（要認証）
      */
     public function store(Request $request)
@@ -96,6 +132,28 @@ class GameSessionController extends Controller
         }
 
         $session->members()->attach($request->user()->id);
+
+        return response()->json($session->load(['user:id,name', 'members:id,name']));
+    }
+
+    /**
+     * パイロットポイントを更新（要認証・参加者のみ）
+     */
+    public function updatePilotPoint(Request $request, string $id)
+    {
+        $session = GameSession::findOrFail($id);
+
+        if (!$session->members()->where('user_id', $request->user()->id)->exists()) {
+            return response()->json(['message' => 'このセッションに参加していません。'], 403);
+        }
+
+        $validated = $request->validate([
+            'pilot_point' => ['required', 'integer', 'min:0'],
+        ]);
+
+        $session->members()->updateExistingPivot($request->user()->id, [
+            'pilot_point' => $validated['pilot_point'],
+        ]);
 
         return response()->json($session->load(['user:id,name', 'members:id,name']));
     }
